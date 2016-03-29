@@ -1,0 +1,1 @@
+# ambassadors-google-map-manager
