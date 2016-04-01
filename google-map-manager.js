@@ -22,6 +22,9 @@ angular.module('google-maps-manager', [ 'google-maps-manager'])
                 this.setZoom = bind(this.setZoom, this);
                 this.updateMarkerIcon = bind(this.updateMarkerIcon, this);
                 this.removeMarker = bind(this.removeMarker, this);
+                this.searchAndRemoveMarkers = bind(this.searchAndRemoveMarkers, this);
+                this.isMarkerPresent = bind(this.isMarkerPresent, this);
+
             }
 
             MapMarkerManager.prototype.initialize = function (mapId, dataSource, mapOptions) {
@@ -43,6 +46,31 @@ angular.module('google-maps-manager', [ 'google-maps-manager'])
                 });
             };
 
+            MapMarkerManager.prototype.searchAndRemoveMarkers = function (dataMarkers) {
+                var _this = this;
+                console.log("begin")
+                console.log(dataMarkers)
+                angular.forEach(this.markers, function (marker, index) {
+                    var isPresent = false;
+                    angular.forEach(dataMarkers.data, function (dataMarker) {
+                        console.log(marker)
+                        console.log(dataMarker)
+                        if(dataMarker.id == marker.data.id){
+                            isPresent=true;
+                            return;
+                        }
+                    });
+                    if(!isPresent)
+                    {
+                        console.log(isPresent);
+                        _this.markerClusterer.removeMarker(marker,false);
+                        marker.setMap(null);
+                        delete _this.markers[index];
+                    }
+                });
+                console.log("end")
+            };
+
             MapMarkerManager.prototype.clearMarkers = function () {
                 angular.forEach(this.markers, function (marker) {
                     marker.setMap(null);
@@ -51,8 +79,15 @@ angular.module('google-maps-manager', [ 'google-maps-manager'])
 
             MapMarkerManager.prototype.deleteMarkers = function () {
                 //    this.clearMarkers();
-                //   this.markerClusterer.clearMarkers()
+                this.markerClusterer.clearMarkers();
                 this.markers = [];
+
+                //this.markerClusterer.resetViewport();
+                //this.markerClusterer.redraw();
+
+                //this.markerClusterer.resetViewport();
+                // this.markerClusterer.redraw();
+
             };
 
             MapMarkerManager.prototype.findIndexMarker = function (dataMarker) {
@@ -66,35 +101,53 @@ angular.module('google-maps-manager', [ 'google-maps-manager'])
                 return position;
             };
 
+            MapMarkerManager.prototype.isMarkerPresent = function (data) {
+                var isPresent = false;
+                var _this = this;
+                angular.forEach(this.markers, function (marker, index) {
+                    if(_this.markers[index].data.id==data.id)
+                    {
+                        isPresent = true
+                    }
+                });
+                return isPresent;
+            };
+
             MapMarkerManager.prototype.setMarkers = function (dataSource) {
                 if(this.map){
-                    this.deleteMarkers();
-                    this.markerClusterer.resetViewport();
                     var _this = this;
+                    this.markerClusterer.addMarkers
+                    //  this.searchAndRemoveMarkers(dataSource);
                     angular.forEach(dataSource.data, function (dataMarker, index) {
-                        _this.markers[index] = new google.maps.Marker({
-                            position: new google.maps.LatLng(dataMarker.latitude, dataMarker.longitude),
-                            pan: true,
-                            fit: true,
-                            icon: dataMarker.marker_image_url,
-                            map: _this.map
-                        });
+                        if(!_this.isMarkerPresent(dataMarker)){
+                            var length = _this.markers.push(new google.maps.Marker({
+                                position: new google.maps.LatLng(dataMarker.latitude, dataMarker.longitude),
+                                pan: true,
+                                fit: true,
+                                icon: dataMarker.marker_image_url,
+                                map: _this.map
+                            }));
 
-                        _this.markers[index].data = dataMarker;
+                            _this.markers[length-1].data = dataMarker;
 
+                            _this.markerClusterer.addMarker(_this.markers[length-1], false);
 
-                        google.maps.event.addListener(_this.markers[index], "click", function () {
-                            if(_this.markerClickEvent)
-                                _this.markerClickEvent(this)
-                        });
-
+                            google.maps.event.addListener(_this.markers[length-1], "click", function () {
+                                if(_this.markerClickEvent)
+                                    _this.markerClickEvent(this)
+                            });
+                        }
                     });
 
                     if(this.isClusterer){
                         if(this.markerClusterer){
                             console.log('clear markers');
-                            this.markerClusterer.clearMarkers();
-                            this.markerClusterer.addMarkers(this.markers, false);
+                            //  this.markerClusterer.clearMarkers();
+                            //
+                            //this.markerClusterer.resetViewport();
+                            //
+                          //this.markerClusterer.redraw();
+
                         }
                     }
                 }
