@@ -13,7 +13,7 @@ angular.module('google-maps-manager', [ 'google-maps-manager'])
                 this.isClusterer = false;
                 this.map = null;
                 this.type = MapMarkerManager.type;
-                this.markerClusterer =  new MarkerClusterer(this.map, this.markers, {maxZoom: 16});
+
                 this.clearMarkers = bind(this.clearMarkers, this);
                 this.deleteMarkers = bind(this.deleteMarkers, this);
                 this.findIndexMarker = bind(this.findIndexMarker, this);
@@ -24,6 +24,7 @@ angular.module('google-maps-manager', [ 'google-maps-manager'])
                 this.removeMarker = bind(this.removeMarker, this);
                 this.addMarker = bind(this.addMarker, this);
                 this.isMarkerPresent = bind(this.isMarkerPresent, this);
+                this.markerClusterer =  new MarkerClusterer(this.map, this.markers, {maxZoom: 16});
             }
 
             MapMarkerManager.prototype.initialize = function (mapId, dataSource, mapOptions) {
