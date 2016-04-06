@@ -11,6 +11,7 @@
     "google map"
   ],
   "author": "Sofia Nabyvanets",
+  "private": false,
   "ignore": [
     "**/.*",
     "node_modules",
