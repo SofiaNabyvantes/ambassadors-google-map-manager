@@ -4,7 +4,9 @@
   "description": "angular module for access to google map's api",
   "main": "google-map-manager.js",
   "dependencies": {
-    "angular": "1.4.8",
+    "angular": "1.5.3",
+    "angular-simple-logger": "~0.0.1",
+    "lodash": ">=3.8.0",
     "google-maps-utility-library-v3": "*"
   },
   "keywords": [
