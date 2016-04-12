@@ -5,11 +5,11 @@
   "main": "google-map-manager.js",
   "dependencies": {
     "angular": "^1.5.3",
-    "angular-simple-logger": "^0.1.7",
     "lodash": ">=3.8.0"
   },
   "devDependencies": {
     "google-maps-utility-library-v3": "*",
+    "angular-simple-logger": "~0.0.1",
     "easy-markerwithlabel": "*"
   },
   "keywords": [

@@ -10,6 +10,7 @@ module.exports = function() {
     vendor: {
       js: [
         bowerDir + 'google-maps-utility-library-v3/markerclusterer/src/markerclusterer.js',
+        bowerDir + 'angular-simple-logger/dist/angular-simple-logger.js',
         bowerDir + 'easy-markerwithlabel/src/markerwithlabel.js'
       ]
     }
