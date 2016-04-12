@@ -154,11 +154,11 @@ angular.module('google-maps-manager', [ 'google-maps-manager'])
                 return lat + '_' + lng;
             };
 
-            var getMarkerArgs = function(this, dataMarker, id) {
+            var getMarkerArgs = function(mapMarker, dataMarker, id) {
                 var markerArgs = { position: new google.maps.LatLng(dataMarker.latitude, dataMarker.longitude),
                                    pan: true,
                                    fit: true,
-                                   map: this.map,
+                                   map: mapMarker.map,
                                    id: id };
                 if(dataMarker.node && dataMarker.submissionId && dataMarker.class) {
                   // dashboard
@@ -168,7 +168,7 @@ angular.module('google-maps-manager', [ 'google-maps-manager'])
                   markerArgs.id: dataMarker.submissionId;
                 } else {
                   // ambassadors
-                  markerArgs.icon = dataMarker[this.mapOptions.icon];
+                  markerArgs.icon = dataMarker[mapMarker.mapOptions.icon];
                 }
 
                 return markerArgs;
