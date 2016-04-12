@@ -54,17 +54,10 @@ angular.module('google-maps-manager', [ 'google-maps-manager'])
 
             MapMarkerManager.prototype.addMarker = function (dataMarker) {
                 if(!this.isMarkerPresent(dataMarker)) {
-                    var  id =  getMarkerUniqueId(dataMarker.latitude, dataMarker.longitude);
+                    var id =  getMarkerUniqueId(dataMarker.latitude, dataMarker.longitude);
+                    var markerArgs = getMarkerArgs(this, dataMarker, id);
 
-                    this.markers[id] = new google.maps.Marker({
-                        position: new google.maps.LatLng(dataMarker.latitude, dataMarker.longitude),
-                        pan: true,
-                        fit: true,
-                        map: this.map,
-                        icon: dataMarker[this.mapOptions.icon],
-                        id: id
-                    });
-
+                    this.markers[id] = new MarkerWithLabel(markerArgs);
                     this.markers[id].data = dataMarker;
 
                     if(this.mapOptions.isClusterer)
@@ -105,16 +98,10 @@ angular.module('google-maps-manager', [ 'google-maps-manager'])
                 var _this = this;
                 angular.forEach(dataSource.data, function (dataMarker, index) {
                     if(!_this.isMarkerPresent(dataMarker)) {
-                        var  id =  getMarkerUniqueId(dataMarker.latitude, dataMarker.longitude);
+                        var id =  getMarkerUniqueId(dataMarker.latitude, dataMarker.longitude);
+                        var markerArgs = getMarkerArgs(_this, dataMarker, id);
 
-                        _this.markers[id] = new google.maps.Marker({
-                            position: new google.maps.LatLng(dataMarker.latitude, dataMarker.longitude),
-                            pan: true,
-                            fit: true,
-                            map: _this.map,
-                            icon: dataMarker[_this.mapOptions.icon],
-                            id: id
-                        });
+                        _this.markers[id] = new MarkerWithLabel(markerArgs);
 
                         _this.markers[id].data = dataMarker;
 
@@ -162,8 +149,29 @@ angular.module('google-maps-manager', [ 'google-maps-manager'])
                 }
             };
 
+
             var getMarkerUniqueId = function(lat, lng) {
                 return lat + '_' + lng;
+            };
+
+            var getMarkerArgs = function(this, dataMarker, id) {
+                var markerArgs = { position: new google.maps.LatLng(dataMarker.latitude, dataMarker.longitude),
+                                   pan: true,
+                                   fit: true,
+                                   map: this.map,
+                                   id: id };
+                if(dataMarker.node && dataMarker.submissionId && dataMarker.class) {
+                  // dashboard
+                  markerArgs.labelContent = dataMarker.node;
+                  markerArgs.labelAnchor: new google.maps.Point(20, 42);
+                  markerArgs.labelClass: 'google-marker marker-' + dataMarker.class; // the CSS class for the label
+                  markerArgs.id: dataMarker.submissionId;
+                } else {
+                  // ambassadors
+                  markerArgs.icon = dataMarker[this.mapOptions.icon];
+                }
+
+                return markerArgs;
             };
 
             return MapMarkerManager;
