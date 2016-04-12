@@ -163,9 +163,9 @@ angular.module('google-maps-manager', [ 'google-maps-manager'])
                 if(dataMarker.node && dataMarker.submissionId && dataMarker.class) {
                   // dashboard
                   markerArgs.labelContent = dataMarker.node;
-                  markerArgs.labelAnchor: new google.maps.Point(20, 42);
-                  markerArgs.labelClass: 'google-marker marker-' + dataMarker.class; // the CSS class for the label
-                  markerArgs.id: dataMarker.submissionId;
+                  markerArgs.labelAnchor = new google.maps.Point(20, 42);
+                  markerArgs.labelClass = 'google-marker marker-' + dataMarker.class; // the CSS class for the label
+                  markerArgs.id = dataMarker.submissionId;
                 } else {
                   // ambassadors
                   markerArgs.icon = dataMarker[mapMarker.mapOptions.icon];
