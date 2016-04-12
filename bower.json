@@ -1,13 +1,16 @@
 {
-  "name": "ambassadors-google-map-manager",
+  "name": "google-map-manager",
   "version": "1.0.0",
   "description": "angular module for access to google map's api",
   "main": "google-map-manager.js",
   "dependencies": {
-    "angular": "1.5.3",
+    "angular": "^1.5.3",
+    "lodash": ">=3.8.0"
+  },
+  "devDependencies": {
+    "google-maps-utility-library-v3": "*",
     "angular-simple-logger": "~0.0.1",
-    "lodash": ">=3.8.0",
-    "google-maps-utility-library-v3": "*"
+    "easy-markerwithlabel": "*"
   },
   "keywords": [
     "google map"
@@ -19,6 +22,9 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "package.json",
+    "config.js",
+    "gulpfile.js"
   ]
 }
